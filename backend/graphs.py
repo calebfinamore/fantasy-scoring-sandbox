@@ -228,10 +228,12 @@ def create_pie_chart(df, weights: ScoringWeights, title, is_pitcher=False, accen
     pos_values = [p[1] for p in sorted_pairs]
 
     # Build a sequential colorscale tinted toward the positional accent color
-    if accent_color:
+    n = len(pos_labels)
+    if accent_color and n > 1:
         import plotly.colors as pc
-        n = max(len(pos_labels), 1)
         colorscale = pc.n_colors(_hex_to_rgb(accent_color), _hex_to_rgb(COLORS["text"]), n, colortype="rgb")
+    elif accent_color and n == 1:
+        colorscale = [_hex_to_rgb(accent_color)]
     else:
         colorscale = None
 

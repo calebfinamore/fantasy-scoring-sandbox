@@ -33,7 +33,14 @@ async def generate_dashboard_data(payload: DashboardPayload):
     Receives user weights and roster settings, calculates points, 
     filters pools dynamically, and returns Plotly JSON graphs.
     """
-    hit_act, pit_act, hit_proj, pit_proj = fetch_raw_data()
+    hit_act = raw_data_cache['hit_act'].copy()
+    pit_act = raw_data_cache['pit_act'].copy()
+    hit_proj = raw_data_cache['hit_proj'].copy()
+    pit_proj = raw_data_cache['pit_proj'].copy()
+
+    print(f"Total pitchers from API: {len(pit_act)}")
+    print(f"Classified as SP: {(pit_act['GS'] / pit_act['G'].replace(0, 1) > 0.5).sum()}")
+    print(f"Classified as RP: {(pit_act['GS'] / pit_act['G'].replace(0, 1) <= 0.5).sum()}")
     
     # Process Actuals (Pass payload.weights for math, payload.rosters for filtering)
     hit_act = calculate_fantasy_points(hit_act, payload.weights, is_pitcher=False)
@@ -44,6 +51,10 @@ async def generate_dashboard_data(payload: DashboardPayload):
     hit_proj = calculate_fantasy_points(hit_proj, payload.weights, is_pitcher=False)
     pit_proj = calculate_fantasy_points(pit_proj, payload.weights, is_pitcher=True, true_decimal_ip=True)
     hit_proj_final, sp_proj_final, rp_proj_final = filter_player_pool(hit_proj, pit_proj, payload.rosters)
+
+    hit_act_final, sp_act_final, rp_act_final = filter_player_pool(hit_act, pit_act, payload.rosters)
+    print(f"Hitters: {len(hit_act_final)}, SPs: {len(sp_act_final)}, RPs: {len(rp_act_final)}")
+    print(f"Pitcher columns: {list(pit_act.columns[:20])}") 
     
     # Generate Graphs
     actuals_graphs = build_dashboard_graphs(hit_act_final, sp_act_final, rp_act_final, payload.weights, pitcher_talent_stat='xFIP')
