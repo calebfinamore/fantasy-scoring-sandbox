@@ -2,8 +2,6 @@
 
 A web app for visualizing how different fantasy baseball scoring systems affect player values. Adjust scoring weights, run calculations, and explore interactive charts showing positional distributions, talent-to-points relationships, and the scoring economy across hitters, starting pitchers, and relief pitchers.
 
----
-
 ## Features
 
 - **Custom scoring weights** for an exhaustive list of hitting and pitching categories
