@@ -2,10 +2,6 @@
 
 A web app for visualizing how different fantasy baseball scoring systems affect player values. Adjust scoring weights, run calculations, and explore interactive charts showing positional distributions, talent-to-points relationships, and the scoring economy across hitters, starting pitchers, and relief pitchers.
 
-**Live demo:** [fantasysandbox.onrender.com](https://fantasysandbox.onrender.com)
-
-> Note: The app is hosted on Render's free tier, so it may take 30–60 seconds to load if it hasn't been used recently.
-
 ---
 
 ## Features
